@@ -49,15 +49,17 @@ def generate_story(scenario):
 def text2speech(story):
     API_URL = "https://api-inference.huggingface.co/models/speechbrain/tts-tacotron2-ljspeech"
     headers = {
-        "Authorization": "Bearer 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"
+        "Authorization": "Bearer " + os.getenv("HUGGINGFACE_API_TOKEN")
     }
     payload = {
         "inputs": story
     }
-
+    print("hugging face api" , HUGGINGFACE_API_TOKEN)
     response = requests.post(API_URL, headers=headers, json=payload)
     print(response)
     if response.status_code != 200:
+        print(response.json())
+        print(response.content)
         print("Error")
         return
     with open("audio.flac", "wb") as file: 
